@@ -1,0 +1,61 @@
+:root {
+    --ews-header-height: 56px;
+    --ews-sider-width: 216px;
+    --ews-sider-collapsed-width: 64px;
+    --ews-content-max-width: 1280px;
+    --ews-radius: 10px;
+    --ews-gap: 16px;
+
+    --ews-bg-page: #f6f7f9;
+    --ews-bg-container: #ffffff;
+    --ews-bg-hover: #f2f4f7;
+    --ews-bg-sider: #ffffff;
+    --ews-border: rgba(15, 23, 42, 0.08);
+    --ews-border-strong: rgba(15, 23, 42, 0.18);
+    --ews-text: rgba(15, 23, 42, 0.85);
+    --ews-text-strong: rgba(15, 23, 42, 0.95);
+    --ews-text-muted: rgba(15, 23, 42, 0.45);
+
+    --ews-primary: #1677ff;
+    --ews-brand-gradient: linear-gradient(135deg, #1677ff 0%, #4096ff 100%);
+
+    --ews-tone-blue-bg: #e6f4ff;
+    --ews-tone-blue-fg: #1677ff;
+    --ews-tone-green-bg: #e8f7ee;
+    --ews-tone-green-fg: #1f9d55;
+    --ews-tone-orange-bg: #fff3e6;
+    --ews-tone-orange-fg: #d97706;
+    --ews-tone-purple-bg: #e8f1fe;
+    --ews-tone-purple-fg: #2f6feb;
+    --ews-tone-cyan-bg: #e6f6f8;
+    --ews-tone-cyan-fg: #0e8a9c;
+    --ews-tone-red-bg: #fdecec;
+    --ews-tone-red-fg: #d9453d;
+}
+
+html[data-theme='dark'] {
+    --ews-bg-page: #0b0b0f;
+    --ews-bg-container: #16161c;
+    --ews-bg-hover: #22222b;
+    --ews-bg-sider: #121218;
+    --ews-border: rgba(255, 255, 255, 0.1);
+    --ews-border-strong: rgba(255, 255, 255, 0.22);
+    --ews-text: rgba(255, 255, 255, 0.82);
+    --ews-text-strong: rgba(255, 255, 255, 0.94);
+    --ews-text-muted: rgba(255, 255, 255, 0.45);
+
+    --ews-primary: #4096ff;
+
+    --ews-tone-blue-bg: rgba(22, 119, 255, 0.18);
+    --ews-tone-blue-fg: #69b1ff;
+    --ews-tone-green-bg: rgba(31, 157, 85, 0.18);
+    --ews-tone-green-fg: #5cd08c;
+    --ews-tone-orange-bg: rgba(217, 119, 6, 0.18);
+    --ews-tone-orange-fg: #f0b062;
+    --ews-tone-purple-bg: rgba(64, 150, 255, 0.16);
+    --ews-tone-purple-fg: #85c0ff;
+    --ews-tone-cyan-bg: rgba(14, 138, 156, 0.2);
+    --ews-tone-cyan-fg: #4fc3d4;
+    --ews-tone-red-bg: rgba(217, 69, 61, 0.18);
+    --ews-tone-red-fg: #f08a84;
+}
