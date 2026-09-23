@@ -7,13 +7,13 @@ import {
     CheckCircleOutlined,
     ClockCircleOutlined,
     FileSearchOutlined,
-    FireOutlined,
     NotificationOutlined,
     PlusOutlined,
     ReloadOutlined,
     RiseOutlined,
     SafetyOutlined,
     TeamOutlined,
+    TrophyOutlined,
     UserAddOutlined,
     WarningOutlined,
 } from '@ant-design/icons';
@@ -92,11 +92,14 @@ export function DashboardPage() {
                 tone: 'cyan' as const,
             },
             {
-                key: 'mine',
-                label: '我参与的项目',
-                value: stats.myProjects,
-                icon: <FireOutlined/>,
+                key: 'workload',
+                label: '工作量',
+                value: stats.myWorkload,
+                icon: <TrophyOutlined/>,
                 tone: 'red' as const,
+                onClick: () => {
+                    navigate('/workload');
+                },
             },
         ];
 

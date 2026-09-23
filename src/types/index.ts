@@ -110,6 +110,7 @@ export interface Assignment {
     description: string;
     tagId?: number;
     capacity: number;
+    workload: number;
     claimedCount: number;
     remaining: number;
     full: boolean;
@@ -217,6 +218,7 @@ export interface AssignmentPayload {
     name: string;
     description: string;
     capacity: number;
+    workload?: number;
     tagId?: number | null;
     deadline?: string | null;
 }
@@ -264,6 +266,16 @@ export interface MemberListQuery {
     banned?: boolean;
     page?: number;
     size?: number;
+}
+
+export interface WorkloadItem {
+    studentId: string;
+    studentName: string;
+    workload: number;
+}
+
+export interface WorkloadRanking {
+    items: WorkloadItem[];
 }
 
 export interface LogListQuery {

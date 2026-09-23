@@ -15,6 +15,7 @@ import {
     MoonOutlined,
     SunOutlined,
     TeamOutlined,
+    TrophyOutlined,
     UnorderedListOutlined,
     UserOutlined,
 } from '@ant-design/icons';
@@ -33,6 +34,7 @@ interface NavItem {
     label: string;
     icon: React.ReactNode;
     adminOnly?: boolean;
+    hidden?: boolean;
     group: 'workspace' | 'admin';
 }
 
@@ -65,6 +67,13 @@ const NAV_ITEMS: NavItem[] = [
         key: '/notifications',
         label: '站内短信',
         icon: <BellOutlined/>,
+        group: 'workspace',
+    },
+    {
+        key: '/workload',
+        label: '工作量排行榜',
+        icon: <TrophyOutlined/>,
+        hidden: true,
         group: 'workspace',
     },
     {
@@ -154,7 +163,7 @@ export function AppLayout() {
     };
 
     const menuItems = useMemo(() => {
-        const workspace = navItems.filter((item) => item.group === 'workspace');
+        const workspace = navItems.filter((item) => item.group === 'workspace' && !item.hidden);
         const admin = navItems.filter((item) => item.group === 'admin');
 
         const items: React.ComponentProps<typeof Menu>['items'] = [

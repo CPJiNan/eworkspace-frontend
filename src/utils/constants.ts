@@ -11,6 +11,8 @@ export const MAX_ASSIGNMENTS = 50;
 
 export const MAX_CAPACITY = 100;
 
+export const MAX_WORKLOAD = 999;
+
 const UNKNOWN_META = {label: '未知', color: 'default'};
 
 export const PROJECT_STATUS_META: Record<ProjectStatus, { label: string; color: string }> = {

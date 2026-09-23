@@ -16,6 +16,7 @@ import {PasswordPage} from '@/pages/password/PasswordPage';
 import {ProfilePage} from '@/pages/profile/ProfilePage';
 import {ProjectDetailPage} from '@/pages/projects/ProjectDetailPage';
 import {ProjectListPage} from '@/pages/projects/ProjectListPage';
+import {WorkloadPage} from '@/pages/workload/WorkloadPage';
 import {NotFoundPage} from '@/pages/NotFoundPage';
 
 export function buildRoutes(): RouteObject[] {
@@ -38,6 +39,7 @@ export function buildRoutes(): RouteObject[] {
                                 {path: '/projects/:id', element: <ProjectDetailPage/>},
                                 {path: '/calendar', element: <CalendarPage/>},
                                 {path: '/my/tasks', element: <MyTasksPage/>},
+                                {path: '/workload', element: <WorkloadPage/>},
                                 {path: '/notifications', element: <NotificationsPage/>},
                                 {path: '/profile', element: <ProfilePage/>},
 

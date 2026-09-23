@@ -11,7 +11,7 @@ import {LoadingBlock} from '@/components/common/StateBlocks';
 import {CountedTextArea} from '@/components/common/CountedTextArea';
 import {useAsync} from '@/hooks/useAsync';
 import type {AssignmentPayload, ProjectStatus} from '@/types';
-import {MAX_ASSIGNMENTS, MAX_CAPACITY, PROJECT_STATUS_OPTIONS, TEXT_LIMIT,} from '@/utils/constants';
+import {MAX_ASSIGNMENTS, MAX_CAPACITY, MAX_WORKLOAD, PROJECT_STATUS_OPTIONS, TEXT_LIMIT,} from '@/utils/constants';
 import {getStaticApi} from '@/utils/antdStatic';
 
 interface AssignmentFormItem {
@@ -19,6 +19,7 @@ interface AssignmentFormItem {
     name: string;
     description?: string;
     capacity: number;
+    workload: number;
     tagId?: number | null;
     deadline?: Dayjs | null;
     claimedCount?: number;
@@ -53,7 +54,7 @@ export function ProjectFormPage() {
     const initialValues = useMemo<Partial<ProjectFormValues> | undefined>(() => {
         if (!isEdit) {
             return {
-                assignments: [{name: '', description: '', capacity: 1, tagId: null, deadline: null}],
+                assignments: [{name: '', description: '', capacity: 1, workload: 1, tagId: null, deadline: null}],
                 semesterIds: [],
                 tagIds: [],
                 status: 'active',
@@ -74,6 +75,7 @@ export function ProjectFormPage() {
                 name: assignment.name,
                 description: assignment.description,
                 capacity: assignment.capacity,
+                workload: assignment.workload,
                 tagId: assignment.tagId ?? null,
                 deadline: assignment.deadline ? dayjs(assignment.deadline) : null,
                 claimedCount: assignment.claimedCount,
@@ -95,6 +97,7 @@ export function ProjectFormPage() {
                 name: item.name.trim(),
                 description: item.description?.trim() ?? '',
                 capacity: item.capacity,
+                workload: item.workload,
                 tagId: item.tagId ?? null,
                 deadline: item.deadline ? item.deadline.toISOString() : null,
             }));
@@ -276,7 +279,7 @@ export function ProjectFormPage() {
                                 {fields.map((field) => (
                                     <div key={field.key} style={{marginBottom: 8}}>
                                         <Row gutter={8} align="top">
-                                            <Col xs={24} sm={7}>
+                                            <Col xs={24} sm={6}>
                                                 <Form.Item
                                                     name={[field.name, 'name']}
                                                     label={field.name === 0 ? '分工名称' : undefined}
@@ -312,7 +315,33 @@ export function ProjectFormPage() {
                                                     />
                                                 </Form.Item>
                                             </Col>
-                                            <Col xs={12} sm={5}>
+                                            <Col xs={12} sm={3}>
+                                                <Form.Item
+                                                    name={[field.name, 'workload']}
+                                                    label={field.name === 0 ? '工作量' : undefined}
+                                                    rules={[
+                                                        {required: true, message: '请输入工作量'},
+                                                        {
+                                                            type: 'number',
+                                                            min: 1,
+                                                            max: MAX_WORKLOAD,
+                                                            message: `工作量为 1-${MAX_WORKLOAD}`,
+                                                        },
+                                                    ]}
+                                                    style={{marginBottom: 8}}
+                                                >
+                                                    <Tooltip title="每名负责人申领该分工后计入的工作量分值">
+                                                        <InputNumber
+                                                            style={{width: '100%'}}
+                                                            min={1}
+                                                            max={MAX_WORKLOAD}
+                                                            precision={0}
+                                                            placeholder="工作量"
+                                                        />
+                                                    </Tooltip>
+                                                </Form.Item>
+                                            </Col>
+                                            <Col xs={12} sm={4}>
                                                 <Form.Item
                                                     name={[field.name, 'tagId']}
                                                     label={field.name === 0 ? '分工标签' : undefined}
@@ -326,7 +355,7 @@ export function ProjectFormPage() {
                                                     />
                                                 </Form.Item>
                                             </Col>
-                                            <Col xs={24} sm={5}>
+                                            <Col xs={24} sm={4}>
                                                 <Form.Item
                                                     name={[field.name, 'deadline']}
                                                     label={field.name === 0 ? '分工截止时间' : undefined}
@@ -408,6 +437,7 @@ export function ProjectFormPage() {
                                             name: '',
                                             description: '',
                                             capacity: 1,
+                                            workload: 1,
                                             tagId: null,
                                             deadline: null,
                                         });

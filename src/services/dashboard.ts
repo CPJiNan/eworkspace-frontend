@@ -2,6 +2,7 @@ import {logApi} from '@/api/log';
 import {notificationApi} from '@/api/notification';
 import {projectApi} from '@/api/project';
 import {userApi} from '@/api/user';
+import {workloadApi} from '@/api/workload';
 import {type Notification, type OperationLog, type Project, Role, type User} from '@/types';
 
 export interface DashboardStats {
@@ -11,6 +12,7 @@ export interface DashboardStats {
     totalSeats: number;
     myTasks: number;
     myProjects: number;
+    myWorkload: number;
     unreadNotifications: number;
     nextDeadline?: string;
     overdueTasks: number;
@@ -41,14 +43,16 @@ const DAY = 24 * 3600 * 1000;
 export async function loadDashboard(user: User): Promise<DashboardData> {
     const isAdmin = user.role === Role.Admin || user.role === Role.SuperAdmin;
 
-    const [activeRes, allRes, tasksRes, noticesRes, membersRes, logsRes] = await Promise.allSettled([
-        projectApi.list({page: 1, size: 50}),
-        projectApi.list({includeAll: true, page: 1, size: 50}),
-        projectApi.myTasks({page: 1, size: 10}),
-        notificationApi.list(1, 5),
-        isAdmin ? userApi.listMembers({page: 1, size: 1}) : Promise.resolve(undefined),
-        isAdmin ? logApi.list({page: 1, size: 5}) : Promise.resolve(undefined),
-    ]);
+    const [activeRes, allRes, tasksRes, noticesRes, membersRes, logsRes, workloadRes] =
+        await Promise.allSettled([
+            projectApi.list({page: 1, size: 50}),
+            projectApi.list({includeAll: true, page: 1, size: 50}),
+            projectApi.myTasks({page: 1, size: 10}),
+            notificationApi.list(1, 5),
+            isAdmin ? userApi.listMembers({page: 1, size: 1}) : Promise.resolve(undefined),
+            isAdmin ? logApi.list({page: 1, size: 5}) : Promise.resolve(undefined),
+            workloadApi.ranking(),
+        ]);
 
     const activeProjects = unwrap(activeRes)?.items ?? [];
     const allProjects = unwrap(allRes)?.items ?? [];
@@ -95,6 +99,9 @@ export async function loadDashboard(user: User): Promise<DashboardData> {
     const members = unwrap(membersRes);
     const logs = unwrap(logsRes);
 
+    const myWorkload =
+        unwrap(workloadRes)?.items.find((item) => item.studentId === user.studentId)?.workload ?? 0;
+
     const stats: DashboardStats = {
         activeProjects: activePage?.total ?? activeProjects.length,
         totalAssignments,
@@ -102,6 +109,7 @@ export async function loadDashboard(user: User): Promise<DashboardData> {
         totalSeats,
         myTasks: unwrap(tasksRes)?.page?.total ?? myTasks.length,
         myProjects: myProjects.length,
+        myWorkload,
         unreadNotifications: notifications?.unreadCount ?? 0,
         nextDeadline,
         overdueTasks,
@@ -124,7 +132,9 @@ export async function loadDashboard(user: User): Promise<DashboardData> {
             projectStatus: task.projectStatus,
         })),
         recentNotifications: notifications?.items ?? [],
-        partial: [activeRes, tasksRes, noticesRes].some((result) => result.status === 'rejected'),
+        partial: [activeRes, tasksRes, noticesRes, workloadRes].some(
+            (result) => result.status === 'rejected',
+        ),
     };
 }
 

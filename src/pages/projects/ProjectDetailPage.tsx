@@ -289,6 +289,9 @@ export function ProjectDetailPage() {
                                         <Space size={6} wrap>
                                             <Typography.Text strong>{assignment.name}</Typography.Text>
                                             {assignment.mine ? <Tag color="green">我的分工</Tag> : null}
+                                            <Typography.Text type="secondary" style={{fontSize: 12}}>
+                                                工作量 {assignment.workload}
+                                            </Typography.Text>
                                             {assignment.deadline ? (
                                                 <Typography.Text type="secondary" style={{fontSize: 12}}>
                                                     截止 {formatDateTime(assignment.deadline)}
