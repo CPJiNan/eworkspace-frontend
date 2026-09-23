@@ -330,7 +330,7 @@ export function ProjectFormPage() {
                                                     ]}
                                                     style={{marginBottom: 8}}
                                                 >
-                                                    <Tooltip title="每名负责人申领该分工后计入的工作量分值">
+                                                    <Tooltip title="申领该分工后计入的工作量">
                                                         <InputNumber
                                                             style={{width: '100%'}}
                                                             min={1}
@@ -476,7 +476,7 @@ function CapacityInput({claimedCount, value, onChange}: CapacityInputProps) {
     const claimed = claimedCount ?? 0;
     const min = Math.max(1, claimed);
     return (
-        <Tooltip title={claimed > 0 ? `已有 ${claimed} 人申领，人数不能少于该值` : undefined}>
+        <Tooltip title={claimed > 0 ? `已有 ${claimed} 人申领` : undefined}>
             <InputNumber
                 style={{width: '100%'}}
                 min={min}
