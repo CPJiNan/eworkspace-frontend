@@ -215,6 +215,7 @@ a {
 
 button.ews-stat {
     appearance: none;
+    width: 100%;
     color: inherit;
     font: inherit;
     text-align: left;
