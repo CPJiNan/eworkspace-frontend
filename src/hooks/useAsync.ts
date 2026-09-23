@@ -21,28 +21,25 @@ export function useAsync<T>(fn: () => Promise<T>, deps: unknown[], options: Opti
     const [data, setData] = useState<T | undefined>(undefined);
     const [loading, setLoading] = useState(enabled);
     const [error, setError] = useState<ApiError | undefined>(undefined);
-    const [nonce, setNonce] = useState(0);
 
     const fnRef = useRef(fn);
     fnRef.current = fn;
+    const runIdRef = useRef(0);
 
-    useEffect(() => {
-        if (!enabled) {
-            setLoading(false);
-            return undefined;
-        }
-        let cancelled = false;
+    const run = useCallback(() => {
+        const runId = runIdRef.current + 1;
+        runIdRef.current = runId;
         setLoading(true);
         setError(undefined);
 
         fnRef
             .current()
             .then((result) => {
-                if (cancelled) return;
+                if (runId !== runIdRef.current) return;
                 setData(result);
             })
             .catch((err: unknown) => {
-                if (cancelled) return;
+                if (runId !== runIdRef.current) return;
                 const apiError = err instanceof ApiError ? err : new ApiError(0, 'UNKNOWN', '请求失败');
                 setError(apiError);
                 if (toastOnError && !apiError.isUnauthorized) {
@@ -50,15 +47,24 @@ export function useAsync<T>(fn: () => Promise<T>, deps: unknown[], options: Opti
                 }
             })
             .finally(() => {
-                if (!cancelled) setLoading(false);
+                if (runId === runIdRef.current) setLoading(false);
             });
+    }, [toastOnError]);
 
+    useEffect(() => {
+        if (!enabled) {
+            setLoading(false);
+            return undefined;
+        }
+        run();
         return () => {
-            cancelled = true;
+            runIdRef.current += 1;
         };
-    }, [...deps, nonce, enabled, toastOnError]);
+    }, [run, enabled, ...deps]);
 
-    const reload = useCallback(() => setNonce((value) => value + 1), []);
+    const reload = useCallback(() => {
+        run();
+    }, [run]);
 
     const update = useCallback((updater: T | ((prev: T | undefined) => T)) => {
         setData((prev) =>

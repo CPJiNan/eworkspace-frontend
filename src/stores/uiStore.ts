@@ -46,7 +46,9 @@ export const useUiStore = create<UiState>((set, get) => ({
         set({theme});
     },
 
-    toggleTheme: () => get().setTheme(get().theme === 'dark' ? 'light' : 'dark'),
+    toggleTheme: () => {
+        get().setTheme(get().theme === 'dark' ? 'light' : 'dark');
+    },
 
     setSiderCollapsed: (collapsed) => {
         try {

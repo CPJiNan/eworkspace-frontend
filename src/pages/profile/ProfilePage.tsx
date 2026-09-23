@@ -6,7 +6,7 @@ import {Alert, Button, Card, Descriptions, Form, Input, Space, Tag} from 'antd';
 import {type UpdateProfilePayload, userApi} from '@/api/user';
 import {ApiError} from '@/api/error';
 import {useAuthStore} from '@/stores/authStore';
-import {ROLE_META, TEXT_LIMIT} from '@/utils/constants';
+import {roleMeta, TEXT_LIMIT} from '@/utils/constants';
 import {getStaticApi} from '@/utils/antdStatic';
 import {formatDateTime} from '@/utils/format';
 
@@ -26,7 +26,7 @@ export function ProfilePage() {
 
     if (!user) return null;
 
-    const roleMeta = ROLE_META[user.role];
+    const meta = roleMeta(user.role);
 
     const handleSubmit = async (values: ProfileForm) => {
         setSubmitting(true);
@@ -54,7 +54,7 @@ export function ProfilePage() {
                 <Descriptions column={1} size="small" colon={false}>
                     <Descriptions.Item label="学号">{user.studentId}</Descriptions.Item>
                     <Descriptions.Item label="角色">
-                        <Tag color={roleMeta.color}>{roleMeta.label}</Tag>
+                        <Tag color={meta.color}>{meta.label}</Tag>
                     </Descriptions.Item>
                     <Descriptions.Item label="账号状态">
                         {user.banned ? (
@@ -73,7 +73,9 @@ export function ProfilePage() {
                     <Button
                         icon={<LockOutlined/>}
                         type="link"
-                        onClick={() => navigate('/password')}
+                        onClick={() => {
+                            navigate('/password');
+                        }}
                         style={{paddingInline: 0}}
                     >
                         修改密码

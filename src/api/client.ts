@@ -1,4 +1,4 @@
-import axios, {AxiosError, type AxiosRequestConfig, type InternalAxiosRequestConfig} from 'axios';
+import axios, {type AxiosError, type AxiosRequestConfig, type InternalAxiosRequestConfig} from 'axios';
 
 import type {ApiResponse, AuthResult} from '@/types';
 import {authStorage} from './authStorage';
@@ -71,7 +71,7 @@ type RetriableConfig = InternalAxiosRequestConfig & { _retried?: boolean };
 
 http.interceptors.response.use(
     (response) => response,
-    async (error: AxiosError<{ code?: string; message?: string }>) => {
+    async (error: AxiosError<{ code?: string; message?: string } | undefined>) => {
         if (!error.response) {
             const message =
                 error.code === 'ECONNABORTED'

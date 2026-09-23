@@ -71,7 +71,9 @@ export function LoginPage() {
                         message={errorMessage}
                         style={{marginTop: 16}}
                         closable
-                        onClose={() => setErrorMessage(null)}
+                        onClose={() => {
+                            setErrorMessage(null);
+                        }}
                     />
                 ) : null}
 

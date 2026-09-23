@@ -213,6 +213,14 @@ a {
     border-color: var(--ews-border-strong);
 }
 
+button.ews-stat {
+    appearance: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
 .ews-stat__icon {
     display: flex;
     align-items: center;
@@ -296,7 +304,12 @@ a {
     gap: 10px;
     width: 100%;
     padding: 10px 12px;
+    border: 0;
     border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
     cursor: pointer;
     transition: background 0.2s ease;
 }

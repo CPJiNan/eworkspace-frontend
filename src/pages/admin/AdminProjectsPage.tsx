@@ -86,7 +86,9 @@ export function AdminProjectsPage() {
             key: 'name',
             render: (_, record) => (
                 <Space direction="vertical" size={2}>
-                    <Typography.Link onClick={() => navigate(`/projects/${record.id}`)}>
+                    <Typography.Link onClick={() => {
+                        navigate(`/projects/${record.id}`);
+                    }}>
                         {record.name}
                     </Typography.Link>
                     <Space size={4} wrap>
@@ -149,7 +151,9 @@ export function AdminProjectsPage() {
             fixed: isMobile ? undefined : 'right',
             render: (_, record) => (
                 <Space size={4} wrap>
-                    <Button type="link" size="small" onClick={() => navigate(`/admin/projects/${record.id}/edit`)}>
+                    <Button type="link" size="small" onClick={() => {
+                        navigate(`/admin/projects/${record.id}/edit`);
+                    }}>
                         编辑
                     </Button>
                     <Dropdown
@@ -180,7 +184,9 @@ export function AdminProjectsPage() {
                             状态
                         </Button>
                     </Dropdown>
-                    <Button type="link" size="small" danger onClick={() => setDeleteTarget(record)}>
+                    <Button type="link" size="small" danger onClick={() => {
+                        setDeleteTarget(record);
+                    }}>
                         删除
                     </Button>
                 </Space>
@@ -195,7 +201,9 @@ export function AdminProjectsPage() {
                     <Input
                         allowClear
                         value={keyword}
-                        onChange={(event) => setKeyword(event.target.value)}
+                        onChange={(event) => {
+                            setKeyword(event.target.value);
+                        }}
                         onPressEnter={() => {
                             setSearchKey(keyword.trim());
                             setPage(1);
@@ -225,7 +233,9 @@ export function AdminProjectsPage() {
                     <Button icon={<ReloadOutlined/>} onClick={projects.reload} loading={projects.loading}>
                         刷新
                     </Button>
-                    <Button type="primary" icon={<PlusOutlined/>} onClick={() => navigate('/admin/projects/new')}>
+                    <Button type="primary" icon={<PlusOutlined/>} onClick={() => {
+                        navigate('/admin/projects/new');
+                    }}>
                         发布项目
                     </Button>
                 </Flex>

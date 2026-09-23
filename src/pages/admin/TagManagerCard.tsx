@@ -107,7 +107,9 @@ export function TagManagerCard() {
                         type="link"
                         size="small"
                         icon={<EditOutlined/>}
-                        onClick={() => openRename(record.id, record.name)}
+                        onClick={() => {
+                            openRename(record.id, record.name);
+                        }}
                     >
                         重命名
                     </Button>
@@ -151,7 +153,9 @@ export function TagManagerCard() {
                         type="link"
                         size="small"
                         icon={<EditOutlined/>}
-                        onClick={() => openRename(record.id, record.name)}
+                        onClick={() => {
+                            openRename(record.id, record.name);
+                        }}
                     >
                         重命名
                     </Button>
@@ -190,7 +194,9 @@ export function TagManagerCard() {
         >
             <Tabs
                 activeKey={activeTab}
-                onChange={(key) => setActiveTab(key as TabKey)}
+                onChange={(key) => {
+                    setActiveTab(key as TabKey);
+                }}
                 items={TAB_META.map((item) => ({key: item.key, label: item.label}))}
             />
 
@@ -250,7 +256,9 @@ export function TagManagerCard() {
                         <Select
                             value={activeTab}
                             style={{width: '100%'}}
-                            onChange={(value) => setActiveTab(value as TabKey)}
+                            onChange={(value) => {
+                                setActiveTab(value as TabKey);
+                            }}
                             options={[
                                 {value: 'project', label: '项目标签'},
                                 {value: 'division', label: '分工标签'},

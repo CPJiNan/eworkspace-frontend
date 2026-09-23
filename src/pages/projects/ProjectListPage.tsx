@@ -111,7 +111,9 @@ export function ProjectListPage() {
                 <Card
                     hoverable
                     style={{width: '100%'}}
-                    onClick={() => navigate(`/projects/${project.id}`)}
+                    onClick={() => {
+                        navigate(`/projects/${project.id}`);
+                    }}
                     styles={{body: {padding: isMobile ? 14 : 20}}}
                 >
                     <Space direction="vertical" size={6} style={{width: '100%'}}>
@@ -242,7 +244,9 @@ export function ProjectListPage() {
                         <Button
                             icon={<FilterOutlined/>}
                             type="text"
-                            onClick={() => projects.reload()}
+                            onClick={() => {
+                                projects.reload();
+                            }}
                             loading={projects.loading}
                         >
                             刷新

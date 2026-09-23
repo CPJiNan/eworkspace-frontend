@@ -26,13 +26,7 @@ import {PagePager} from '@/components/common/PagePager';
 import {useAsync} from '@/hooks/useAsync';
 import {useIsMobile} from '@/hooks/useIsMobile';
 import type {OperationLog, OperationType, TargetType} from '@/types';
-import {
-    OPERATION_LABEL,
-    OPERATION_OPTIONS,
-    PAGE_SIZE,
-    TARGET_TYPE_LABEL,
-    TARGET_TYPE_OPTIONS,
-} from '@/utils/constants';
+import {OPERATION_OPTIONS, operationLabel, PAGE_SIZE, TARGET_TYPE_OPTIONS, targetTypeLabel,} from '@/utils/constants';
 import {getStaticApi} from '@/utils/antdStatic';
 import {formatDateTime} from '@/utils/format';
 
@@ -134,7 +128,7 @@ export function LogsPage() {
             dataIndex: 'type',
             key: 'type',
             width: 120,
-            render: (value: OperationType) => <Tag color="blue">{OPERATION_LABEL[value] ?? value}</Tag>,
+            render: (value: OperationType) => <Tag color="blue">{operationLabel(value)}</Tag>,
         },
         {
             title: '操作对象',
@@ -143,7 +137,7 @@ export function LogsPage() {
             render: (_, record) => (
                 <Space direction="vertical" size={0}>
                     <Typography.Text style={{fontSize: 13}}>
-                        {TARGET_TYPE_LABEL[record.targetType] ?? record.targetType}
+                        {targetTypeLabel(record.targetType)}
                         {record.targetName ? `：${record.targetName}` : ''}
                     </Typography.Text>
                     {record.targetId ? (
@@ -251,7 +245,9 @@ export function LogsPage() {
                                     批量删除
                                 </Button>
                             </Popconfirm>
-                            <Button icon={<ClearOutlined/>} danger onClick={() => setClearOpen(true)}>
+                            <Button icon={<ClearOutlined/>} danger onClick={() => {
+                                setClearOpen(true);
+                            }}>
                                 按时间范围清理
                             </Button>
                         </Space>
@@ -270,7 +266,9 @@ export function LogsPage() {
                     scroll={{x: 900}}
                     rowSelection={{
                         selectedRowKeys: selected,
-                        onChange: (keys) => setSelected(keys as number[]),
+                        onChange: (keys) => {
+                            setSelected(keys as number[]);
+                        },
                     }}
                 />
                 {meta ? <PagePager page={meta} simple={isMobile} onChange={setPage}/> : null}

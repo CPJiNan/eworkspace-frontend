@@ -94,7 +94,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 bindAuthBridge({
     getAccessToken: () => useAuthStore.getState().accessToken,
     getRefreshToken: () => useAuthStore.getState().refreshToken,
-    applyAuthResult: (result) => useAuthStore.getState().applyAuthResult(result),
+    applyAuthResult: (result) => {
+        useAuthStore.getState().applyAuthResult(result);
+    },
     handleSessionExpired: () => {
         const {user, clear} = useAuthStore.getState();
         const target = redirectFromUrl(window.location.href);

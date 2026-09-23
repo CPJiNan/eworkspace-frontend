@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function PagePager({page, onChange, simple = false}: Props) {
-    if (!page || page.total === 0) return null;
+    if (page.total === 0) return null;
 
     return (
         <div style={{display: 'flex', justifyContent: 'center', marginTop: 16}}>

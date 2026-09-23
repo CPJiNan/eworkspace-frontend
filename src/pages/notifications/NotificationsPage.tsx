@@ -122,8 +122,9 @@ export function NotificationsPage() {
                         <Checkbox
                             checked={allSelected}
                             indeterminate={selected.length > 0 && !allSelected}
-                            onChange={(event) =>
-                                setSelected(event.target.checked ? items.map((item) => item.id) : [])
+                            onChange={(event) => {
+                                setSelected(event.target.checked ? items.map((item) => item.id) : []);
+                            }
                             }
                         >
                             全选本页
@@ -184,7 +185,9 @@ export function NotificationsPage() {
                                 <Flex gap={12} align="flex-start">
                                     <Checkbox
                                         checked={selected.includes(item.id)}
-                                        onChange={(event) => toggleSelect(item.id, event.target.checked)}
+                                        onChange={(event) => {
+                                            toggleSelect(item.id, event.target.checked);
+                                        }}
                                         style={{marginTop: 4}}
                                     />
                                     <div style={{flex: 1, minWidth: 0}}>
@@ -215,7 +218,9 @@ export function NotificationsPage() {
                                                     type="link"
                                                     size="small"
                                                     style={{paddingInline: 0}}
-                                                    onClick={() => navigate(`/projects/${item.projectId}`)}
+                                                    onClick={() => {
+                                                        navigate(`/projects/${item.projectId}`);
+                                                    }}
                                                 >
                                                     查看项目
                                                 </Button>

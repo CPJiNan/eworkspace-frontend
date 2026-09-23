@@ -13,7 +13,9 @@ export function useUnreadCount(): { unread: number; refresh: () => void } {
         if (!user) return;
         notificationApi
             .list(1, 1)
-            .then((result) => setUnread(result.unreadCount))
+            .then((result) => {
+                setUnread(result.unreadCount);
+            })
             .catch(() => {
             });
     }, [user]);
@@ -25,7 +27,9 @@ export function useUnreadCount(): { unread: number; refresh: () => void } {
         }
         refresh();
         const timer = window.setInterval(refresh, POLL_INTERVAL);
-        return () => window.clearInterval(timer);
+        return () => {
+            window.clearInterval(timer);
+        };
     }, [user, refresh]);
 
     return {unread, refresh};

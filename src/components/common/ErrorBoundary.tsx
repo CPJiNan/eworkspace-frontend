@@ -44,6 +44,6 @@ export class ErrorBoundary extends Component<Props, State> {
 
     private handleReset = () => {
         this.setState({error: null});
-        window.location.href = '/projects';
+        window.location.assign('/projects');
     };
 }

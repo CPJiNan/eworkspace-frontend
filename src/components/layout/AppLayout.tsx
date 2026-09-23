@@ -130,13 +130,17 @@ export function AppLayout() {
                 key: 'profile',
                 icon: <UserOutlined/>,
                 label: '个人信息',
-                onClick: () => navigate('/profile'),
+                onClick: () => {
+                    navigate('/profile');
+                },
             },
             {
                 key: 'password',
                 icon: <LockOutlined/>,
                 label: '修改密码',
-                onClick: () => navigate('/password'),
+                onClick: () => {
+                    navigate('/password');
+                },
             },
             {type: 'divider' as const},
             {
@@ -144,7 +148,7 @@ export function AppLayout() {
                 icon: <LogoutOutlined/>,
                 label: '退出登录',
                 danger: true,
-                onClick: handleLogout,
+                onClick: () => void handleLogout(),
             },
         ],
     };
@@ -210,7 +214,9 @@ export function AppLayout() {
                             className="ews-nav-button"
                             aria-label="收起侧边栏"
                             icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
-                            onClick={() => setCollapsed(!collapsed)}
+                            onClick={() => {
+                                setCollapsed(!collapsed);
+                            }}
                         >
                             {collapsed ? '展开' : '收起'}
                         </Button>
@@ -250,7 +256,9 @@ export function AppLayout() {
                             type="text"
                             aria-label="打开导航"
                             icon={<MenuOutlined/>}
-                            onClick={() => setDrawerOpen(true)}
+                            onClick={() => {
+                                setDrawerOpen(true);
+                            }}
                         />
                     ) : null}
 
@@ -301,8 +309,10 @@ export function AppLayout() {
                     <Drawer
                         placement="left"
                         open={drawerOpen}
-                        onClose={() => setDrawerOpen(false)}
-                        width={248}
+                        onClose={() => {
+                            setDrawerOpen(false);
+                        }}
+                        size={248}
                         styles={{
                             body: {padding: 0, display: 'flex', flexDirection: 'column'},
                             header: {display: 'none'}
@@ -346,15 +356,28 @@ export function AppLayout() {
                                     </Link>
                                 );
                             })}
-                        <a
-                            onClick={() => setDrawerOpen(true)}
-                            style={{flex: 1, textAlign: 'center', fontSize: 11, color: 'var(--ews-text-muted)'}}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setDrawerOpen(true);
+                            }}
+                            style={{
+                                flex: 1,
+                                textAlign: 'center',
+                                fontSize: 11,
+                                color: 'var(--ews-text-muted)',
+                                background: 'transparent',
+                                border: 0,
+                                padding: 0,
+                                cursor: 'pointer',
+                                fontFamily: 'inherit',
+                            }}
                         >
                             <div style={{fontSize: 18}}>
                                 <UnorderedListOutlined/>
                             </div>
                             <div>更多</div>
-                        </a>
+                        </button>
                     </nav>
                 </>
             ) : null}

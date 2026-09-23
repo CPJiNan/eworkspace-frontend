@@ -8,6 +8,8 @@ function normalize(path: string): string {
 
 export function isRedirectablePath(path: string | undefined | null): path is string {
     if (!path) return false;
+    if (path.includes('\\') || path.startsWith('//')) return false;
+    if (/[\u0000-\u001f\u007f]/.test(path)) return false;
     const normalized = normalize(path.split('?')[0]);
     return !NON_REDIRECTABLE.some(
         (prefix) => normalized === prefix || normalized.startsWith(`${prefix}/`),

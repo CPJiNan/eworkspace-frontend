@@ -35,7 +35,7 @@ export function DashboardPage() {
     const isAdmin = canManage(user?.role);
 
     const dashboard = useAsync(
-        () => loadDashboard(user!),
+        () => (user ? loadDashboard(user) : Promise.resolve(undefined)),
         [user?.studentId, refreshKey],
         {enabled: Boolean(user)},
     );
@@ -53,7 +53,9 @@ export function DashboardPage() {
                 value: stats.activeProjects,
                 icon: <RiseOutlined/>,
                 tone: 'blue' as const,
-                onClick: () => navigate('/projects'),
+                onClick: () => {
+                    navigate('/projects');
+                },
             },
             {
                 key: 'seats',
@@ -68,7 +70,9 @@ export function DashboardPage() {
                 value: stats.myTasks,
                 icon: <CarryOutOutlined/>,
                 tone: 'purple' as const,
-                onClick: () => navigate('/my/tasks'),
+                onClick: () => {
+                    navigate('/my/tasks');
+                },
             },
             {
                 key: 'unread',
@@ -76,7 +80,9 @@ export function DashboardPage() {
                 value: stats.unreadNotifications,
                 icon: <BellOutlined/>,
                 tone: 'orange' as const,
-                onClick: () => navigate('/notifications'),
+                onClick: () => {
+                    navigate('/notifications');
+                },
             },
             {
                 key: 'nextDeadline',
@@ -104,7 +110,9 @@ export function DashboardPage() {
                 value: stats.totalMembers ?? '-',
                 icon: <TeamOutlined/>,
                 tone: 'blue' as const,
-                onClick: () => navigate('/admin/members'),
+                onClick: () => {
+                    navigate('/admin/members');
+                },
             },
             {
                 key: 'logs',
@@ -112,7 +120,9 @@ export function DashboardPage() {
                 value: stats.totalLogs ?? '-',
                 icon: <FileSearchOutlined/>,
                 tone: 'green' as const,
-                onClick: () => navigate('/admin/logs'),
+                onClick: () => {
+                    navigate('/admin/logs');
+                },
             },
         ];
     }, [stats, isAdmin, navigate]);
@@ -184,14 +194,12 @@ export function DashboardPage() {
                                 {data.recentProjects.map((project) => {
                                     const deadline = formatDeadline(project.deadline, project.status);
                                     return (
-                                        <div
+                                        <button
                                             key={project.id}
+                                            type="button"
                                             className="ews-action"
-                                            role="button"
-                                            tabIndex={0}
-                                            onClick={() => navigate(`/projects/${project.id}`)}
-                                            onKeyDown={(event) => {
-                                                if (event.key === 'Enter') navigate(`/projects/${project.id}`);
+                                            onClick={() => {
+                                                navigate(`/projects/${project.id}`);
                                             }}
                                         >
                                             <div style={{flex: 1, minWidth: 0}}>
@@ -207,7 +215,7 @@ export function DashboardPage() {
                                                     {project.totalCapacity} · 截止 {deadline.text}
                                                 </div>
                                             </div>
-                                        </div>
+                                        </button>
                                     );
                                 })}
                             </div>
@@ -233,14 +241,12 @@ export function DashboardPage() {
                                 {data.upcomingProjects.map((project) => {
                                     const deadline = formatDeadline(project.deadline, project.status);
                                     return (
-                                        <div
+                                        <button
                                             key={project.id}
+                                            type="button"
                                             className="ews-action"
-                                            role="button"
-                                            tabIndex={0}
-                                            onClick={() => navigate(`/projects/${project.id}`)}
-                                            onKeyDown={(event) => {
-                                                if (event.key === 'Enter') navigate(`/projects/${project.id}`);
+                                            onClick={() => {
+                                                navigate(`/projects/${project.id}`);
                                             }}
                                         >
                                             <CalendarOutlined style={{color: 'var(--ews-text-muted)'}}/>
@@ -253,7 +259,7 @@ export function DashboardPage() {
                                                     {deadline.text}
                                                 </div>
                                             </div>
-                                        </div>
+                                        </button>
                                     );
                                 })}
                             </div>
@@ -269,17 +275,23 @@ export function DashboardPage() {
                                     <ActionRow
                                         icon={<PlusOutlined/>}
                                         title="发布项目"
-                                        onClick={() => navigate('/admin/projects/new')}
+                                        onClick={() => {
+                                            navigate('/admin/projects/new');
+                                        }}
                                     />
                                     <ActionRow
                                         icon={<UserAddOutlined/>}
                                         title="新增账号"
-                                        onClick={() => navigate('/admin/members')}
+                                        onClick={() => {
+                                            navigate('/admin/members');
+                                        }}
                                     />
                                     <ActionRow
                                         icon={<FileSearchOutlined/>}
                                         title="操作日志"
-                                        onClick={() => navigate('/admin/logs')}
+                                        onClick={() => {
+                                            navigate('/admin/logs');
+                                        }}
                                     />
                                 </>
                             ) : (
@@ -287,17 +299,23 @@ export function DashboardPage() {
                                     <ActionRow
                                         icon={<RiseOutlined/>}
                                         title="申领分工"
-                                        onClick={() => navigate('/projects')}
+                                        onClick={() => {
+                                            navigate('/projects');
+                                        }}
                                     />
                                     <ActionRow
                                         icon={<CarryOutOutlined/>}
                                         title="我的任务"
-                                        onClick={() => navigate('/my/tasks')}
+                                        onClick={() => {
+                                            navigate('/my/tasks');
+                                        }}
                                     />
                                     <ActionRow
                                         icon={<SafetyOutlined/>}
                                         title="个人信息"
-                                        onClick={() => navigate('/profile')}
+                                        onClick={() => {
+                                            navigate('/profile');
+                                        }}
                                     />
                                 </>
                             )}
@@ -318,7 +336,9 @@ export function DashboardPage() {
                     >
                         {data.myTasks.length === 0 ? (
                             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无数据">
-                                <Button type="primary" onClick={() => navigate('/projects')}>
+                                <Button type="primary" onClick={() => {
+                                    navigate('/projects');
+                                }}>
                                     去看看项目
                                 </Button>
                             </Empty>
@@ -327,14 +347,12 @@ export function DashboardPage() {
                                 {data.myTasks.map((task) => {
                                     const deadline = formatDeadline(task.deadline, task.projectStatus);
                                     return (
-                                        <div
+                                        <button
                                             key={`${task.projectId}-${task.assignmentName}`}
+                                            type="button"
                                             className="ews-action"
-                                            role="button"
-                                            tabIndex={0}
-                                            onClick={() => navigate(`/projects/${task.projectId}`)}
-                                            onKeyDown={(event) => {
-                                                if (event.key === 'Enter') navigate(`/projects/${task.projectId}`);
+                                            onClick={() => {
+                                                navigate(`/projects/${task.projectId}`);
                                             }}
                                         >
                                             <div style={{flex: 1, minWidth: 0}}>
@@ -349,7 +367,7 @@ export function DashboardPage() {
                                                     截止 {deadline.text}
                                                 </div>
                                             </div>
-                                        </div>
+                                        </button>
                                     );
                                 })}
                             </div>
@@ -373,14 +391,12 @@ export function DashboardPage() {
                         ) : (
                             <div>
                                 {data.recentNotifications.slice(0, 4).map((notice) => (
-                                    <div
+                                    <button
                                         key={notice.id}
+                                        type="button"
                                         className="ews-action"
-                                        role="button"
-                                        tabIndex={0}
-                                        onClick={() => navigate(notice.projectId ? `/projects/${notice.projectId}` : '/notifications')}
-                                        onKeyDown={(event) => {
-                                            if (event.key === 'Enter') navigate('/notifications');
+                                        onClick={() => {
+                                            navigate(notice.projectId ? `/projects/${notice.projectId}` : '/notifications');
                                         }}
                                     >
                                         <div style={{flex: 1, minWidth: 0}}>
@@ -390,7 +406,7 @@ export function DashboardPage() {
                                             </Space>
                                             <div className="ews-action__desc">{formatFromNow(notice.createdAt)}</div>
                                         </div>
-                                    </div>
+                                    </button>
                                 ))}
                             </div>
                         )}

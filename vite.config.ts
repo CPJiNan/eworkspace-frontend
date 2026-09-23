@@ -25,9 +25,17 @@ export default defineConfig({
         chunkSizeWarningLimit: 1200,
         rollupOptions: {
             output: {
-                manualChunks: {
-                    react: ['react', 'react-dom', 'react-router-dom'],
-                    antd: ['antd', '@ant-design/icons'],
+                codeSplitting: {
+                    groups: [
+                        {
+                            name: 'react',
+                            test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom|scheduler)[\\/]/,
+                        },
+                        {
+                            name: 'antd',
+                            test: /[\\/]node_modules[\\/](antd|@ant-design|rc-[^\\/]+)[\\/]/,
+                        },
+                    ],
                 },
             },
         },

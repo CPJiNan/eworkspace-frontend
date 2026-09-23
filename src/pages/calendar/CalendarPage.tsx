@@ -95,7 +95,9 @@ export function CalendarPage() {
             <Card styles={{body: {padding: isMobile ? 8 : 16}}}>
                 <Calendar
                     value={selectedDate}
-                    onSelect={(date) => setSelectedDate(date)}
+                    onSelect={(date) => {
+                        setSelectedDate(date);
+                    }}
                     onPanelChange={(date, nextMode) => {
                         setSelectedDate((previous) => {
                             if (nextMode === 'year') return date;
@@ -132,7 +134,9 @@ export function CalendarPage() {
                             <List.Item
                                 key={project.id}
                                 style={{cursor: 'pointer'}}
-                                onClick={() => navigate(`/projects/${project.id}`)}
+                                onClick={() => {
+                                    navigate(`/projects/${project.id}`);
+                                }}
                             >
                                 <List.Item.Meta
                                     title={

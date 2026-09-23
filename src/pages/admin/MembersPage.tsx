@@ -11,7 +11,7 @@ import {useAsync} from '@/hooks/useAsync';
 import {useIsMobile} from '@/hooks/useIsMobile';
 import {canManage, isSuperAdmin, useAuthStore} from '@/stores/authStore';
 import {type CreateAccountResult, Role, type User} from '@/types';
-import {PAGE_SIZE, ROLE_META, ROLE_OPTIONS, TEXT_LIMIT} from '@/utils/constants';
+import {PAGE_SIZE, ROLE_OPTIONS, roleMeta, TEXT_LIMIT} from '@/utils/constants';
 import {getStaticApi} from '@/utils/antdStatic';
 import {formatDateTime} from '@/utils/format';
 
@@ -76,7 +76,7 @@ export function MembersPage() {
         try {
             const payload = {
                 studentIds: [studentId],
-                role: values.role ?? Role.User,
+                role: values.role,
                 name: values.name?.trim(),
                 phone: values.phone?.trim(),
                 wechat: values.wechat?.trim(),
@@ -141,7 +141,9 @@ export function MembersPage() {
             key: 'name',
             render: (_, record) => (
                 <Space direction="vertical" size={2}>
-                    <Typography.Link onClick={() => navigate(`/admin/members/${record.studentId}`)}>
+                    <Typography.Link onClick={() => {
+                        navigate(`/admin/members/${record.studentId}`);
+                    }}>
                         {record.name || '未命名用户'}
                     </Typography.Link>
                     <Typography.Text type="secondary" style={{fontSize: 12}}>
@@ -177,7 +179,7 @@ export function MembersPage() {
             key: 'role',
             width: 110,
             render: (value: Role) => {
-                const metaItem = ROLE_META[value];
+                const metaItem = roleMeta(value);
                 return <Tag color={metaItem.color}>{metaItem.label}</Tag>;
             },
         },
@@ -213,11 +215,15 @@ export function MembersPage() {
                     <Button
                         type="link"
                         size="small"
-                        onClick={() => navigate(`/admin/members/${record.studentId}`)}
+                        onClick={() => {
+                            navigate(`/admin/members/${record.studentId}`);
+                        }}
                     >
                         编辑
                     </Button>
-                    <Button type="link" size="small" onClick={() => setResetTarget(record)}>
+                    <Button type="link" size="small" onClick={() => {
+                        setResetTarget(record);
+                    }}>
                         重置密码
                     </Button>
                     {record.role === Role.SuperAdmin ? (
@@ -271,7 +277,9 @@ export function MembersPage() {
                     <Input
                         allowClear
                         value={keyword}
-                        onChange={(event) => setKeyword(event.target.value)}
+                        onChange={(event) => {
+                            setKeyword(event.target.value);
+                        }}
                         onPressEnter={() => {
                             setSearchKey(keyword.trim());
                             setPage(1);
@@ -290,7 +298,7 @@ export function MembersPage() {
                             setPage(1);
                         }}
                         options={[
-                            {value: Role.SuperAdmin, label: ROLE_META[Role.SuperAdmin].label},
+                            {value: Role.SuperAdmin, label: roleMeta(Role.SuperAdmin).label},
                             ...ROLE_OPTIONS,
                         ]}
                     />
@@ -342,7 +350,9 @@ export function MembersPage() {
                 open={createOpen}
                 title="新增账号"
                 confirmLoading={creating}
-                onOk={() => createForm.submit()}
+                onOk={() => {
+                    createForm.submit();
+                }}
                 onCancel={() => {
                     setCreateOpen(false);
                     setCreateResult(null);

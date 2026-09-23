@@ -9,7 +9,9 @@ export function NotFoundPage() {
             title="404"
             subTitle="页面不存在或已被移除"
             extra={
-                <Button type="primary" onClick={() => navigate('/projects', {replace: true})}>
+                <Button type="primary" onClick={() => {
+                    navigate('/projects', {replace: true});
+                }}>
                     返回项目列表
                 </Button>
             }

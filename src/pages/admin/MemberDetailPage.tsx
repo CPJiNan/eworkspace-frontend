@@ -10,7 +10,7 @@ import {useAsync} from '@/hooks/useAsync';
 import {useIsMobile} from '@/hooks/useIsMobile';
 import {isSuperAdmin, useAuthStore} from '@/stores/authStore';
 import {Role, type User} from '@/types';
-import {ROLE_META, ROLE_OPTIONS, TEXT_LIMIT} from '@/utils/constants';
+import {ROLE_OPTIONS, roleMeta, TEXT_LIMIT} from '@/utils/constants';
 import {getStaticApi} from '@/utils/antdStatic';
 import {formatDateTime} from '@/utils/format';
 
@@ -119,7 +119,7 @@ export function MemberDetailPage() {
     const data = member.data;
     if (!data) return null;
 
-    const roleMeta = ROLE_META[data.role];
+    const meta = roleMeta(data.role);
     const roleEditable =
         isSuperAdmin(currentUser?.role) &&
         data.role !== Role.SuperAdmin &&
@@ -128,7 +128,9 @@ export function MemberDetailPage() {
 
     return (
         <Space direction="vertical" size={16} style={{width: '100%'}}>
-            <Button icon={<ArrowLeftOutlined/>} onClick={() => navigate('/admin/members')}>
+            <Button icon={<ArrowLeftOutlined/>} onClick={() => {
+                navigate('/admin/members');
+            }}>
                 返回成员管理
             </Button>
 
@@ -146,7 +148,7 @@ export function MemberDetailPage() {
                                     style={{width: 140}}
                                 />
                                 <Popconfirm
-                                    title={`确认改为${ROLE_META[roleValue].label}？`}
+                                    title={`确认改为${roleMeta(roleValue).label}？`}
                                     okText="确认修改"
                                     cancelText="取消"
                                     disabled={!roleChanged}
@@ -158,7 +160,7 @@ export function MemberDetailPage() {
                                 </Popconfirm>
                             </Space>
                         ) : (
-                            <Tag color={roleMeta.color}>{roleMeta.label}</Tag>
+                            <Tag color={meta.color}>{meta.label}</Tag>
                         )}
                     </Descriptions.Item>
                     <Descriptions.Item label="状态">

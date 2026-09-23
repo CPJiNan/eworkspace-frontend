@@ -56,7 +56,9 @@ export function MyTasksPage() {
                     <Input
                         allowClear
                         value={keyword}
-                        onChange={(event) => setKeyword(event.target.value)}
+                        onChange={(event) => {
+                            setKeyword(event.target.value);
+                        }}
                         onPressEnter={() => {
                             setSearchKey(keyword.trim());
                             setPage(1);
@@ -74,7 +76,9 @@ export function MyTasksPage() {
                     >
                         搜索
                     </Button>
-                    <Button icon={<ReloadOutlined/>} onClick={() => tasks.reload()} loading={tasks.loading}>
+                    <Button icon={<ReloadOutlined/>} onClick={() => {
+                        tasks.reload();
+                    }} loading={tasks.loading}>
                         刷新
                     </Button>
                 </div>
@@ -90,7 +94,9 @@ export function MyTasksPage() {
                         image={Empty.PRESENTED_IMAGE_SIMPLE}
                         description="暂无数据"
                     >
-                        <Button type="primary" onClick={() => navigate('/projects')}>
+                        <Button type="primary" onClick={() => {
+                            navigate('/projects');
+                        }}>
                             去看看项目
                         </Button>
                     </Empty>
@@ -110,7 +116,9 @@ export function MyTasksPage() {
                                     style={{width: '100%'}}
                                     styles={{body: {padding: isMobile ? 14 : 18}}}
                                     hoverable
-                                    onClick={() => navigate(`/projects/${task.projectId}`)}
+                                    onClick={() => {
+                                        navigate(`/projects/${task.projectId}`);
+                                    }}
                                 >
                                     <Space direction="vertical" size={8} style={{width: '100%'}}>
                                         <Flex justify="space-between" align="flex-start" wrap gap={8}>
@@ -137,7 +145,9 @@ export function MyTasksPage() {
                                             </Typography.Text>
                                         </Flex>
 
-                                        <Flex justify="flex-end" onClick={(event) => event.stopPropagation()}>
+                                        <Flex justify="flex-end" onClick={(event) => {
+                                            event.stopPropagation();
+                                        }}>
                                             <Popconfirm
                                                 title="确认取消这条申领？"
                                                 description="取消后名额将被释放，且申领信息不可修改。"

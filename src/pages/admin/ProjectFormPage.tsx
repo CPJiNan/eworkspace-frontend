@@ -72,7 +72,7 @@ export function ProjectFormPage() {
             assignments: project.assignments.map((assignment) => ({
                 id: assignment.id,
                 name: assignment.name,
-                description: assignment.description ?? '',
+                description: assignment.description,
                 capacity: assignment.capacity,
                 tagId: assignment.tagId ?? null,
                 deadline: assignment.deadline ? dayjs(assignment.deadline) : null,
@@ -141,7 +141,9 @@ export function ProjectFormPage() {
                     action={<Button onClick={detail.reload}>重试</Button>}
                 />
                 <div>
-                    <Button icon={<ArrowLeftOutlined/>} onClick={() => navigate('/admin/projects')}>
+                    <Button icon={<ArrowLeftOutlined/>} onClick={() => {
+                        navigate('/admin/projects');
+                    }}>
                         返回项目管理
                     </Button>
                 </div>
@@ -161,7 +163,9 @@ export function ProjectFormPage() {
 
     return (
         <Space direction="vertical" size={16} style={{width: '100%'}}>
-            <Button icon={<ArrowLeftOutlined/>} onClick={() => navigate('/admin/projects')}>
+            <Button icon={<ArrowLeftOutlined/>} onClick={() => {
+                navigate('/admin/projects');
+            }}>
                 返回项目管理
             </Button>
 
@@ -255,7 +259,7 @@ export function ProjectFormPage() {
                         name="assignments"
                         rules={[
                             {
-                                validator: async (_, value: AssignmentFormItem[]) => {
+                                validator: async (_, value: AssignmentFormItem[] | undefined) => {
                                     if (!value || value.length === 0) {
                                         return Promise.reject(new Error('项目至少需要一个具体分工'));
                                     }
@@ -355,7 +359,9 @@ export function ProjectFormPage() {
                                                                 danger
                                                                 icon={<DeleteOutlined/>}
                                                                 disabled={fields.length <= 1}
-                                                                onClick={() => remove(field.name)}
+                                                                onClick={() => {
+                                                                    remove(field.name);
+                                                                }}
                                                             />
                                                         </Tooltip>
                                                     </Space>
@@ -397,13 +403,15 @@ export function ProjectFormPage() {
                                     type="dashed"
                                     block
                                     icon={<PlusOutlined/>}
-                                    onClick={() => add({
-                                        name: '',
-                                        description: '',
-                                        capacity: 1,
-                                        tagId: null,
-                                        deadline: null,
-                                    })}
+                                    onClick={() => {
+                                        add({
+                                            name: '',
+                                            description: '',
+                                            capacity: 1,
+                                            tagId: null,
+                                            deadline: null,
+                                        });
+                                    }}
                                     disabled={fields.length >= MAX_ASSIGNMENTS}
                                 >
                                     添加分工
@@ -418,7 +426,9 @@ export function ProjectFormPage() {
                         <Button type="primary" htmlType="submit" icon={<SaveOutlined/>} loading={submitting}>
                             {isEdit ? '保存修改' : '发布项目'}
                         </Button>
-                        <Button onClick={() => navigate('/admin/projects')}>取消</Button>
+                        <Button onClick={() => {
+                            navigate('/admin/projects');
+                        }}>取消</Button>
                     </Space>
                 </Card>
             </Form>

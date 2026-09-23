@@ -180,7 +180,9 @@ export function ProjectDetailPage() {
     if (project.error) {
         return (
             <Space direction="vertical" size={16} style={{width: '100%'}}>
-                <Button icon={<ArrowLeftOutlined/>} onClick={() => navigate(-1)}>
+                <Button icon={<ArrowLeftOutlined/>} onClick={() => {
+                    navigate(-1);
+                }}>
                     返回
                 </Button>
                 <ErrorBlock error={project.error} onRetry={project.reload}/>
@@ -192,15 +194,21 @@ export function ProjectDetailPage() {
     return (
         <Space direction="vertical" size={16} style={{width: '100%'}}>
             <Flex justify="space-between" align="center" wrap gap={8}>
-                <Button icon={<ArrowLeftOutlined/>} onClick={() => navigate(-1)}>
+                <Button icon={<ArrowLeftOutlined/>} onClick={() => {
+                    navigate(-1);
+                }}>
                     返回
                 </Button>
                 {isAdmin ? (
                     <Space wrap>
-                        <Button icon={<EditOutlined/>} onClick={() => navigate(`/admin/projects/${projectId}/edit`)}>
+                        <Button icon={<EditOutlined/>} onClick={() => {
+                            navigate(`/admin/projects/${projectId}/edit`);
+                        }}>
                             编辑项目
                         </Button>
-                        <Button danger icon={<DeleteOutlined/>} onClick={() => setDeleteOpen(true)}>
+                        <Button danger icon={<DeleteOutlined/>} onClick={() => {
+                            setDeleteOpen(true);
+                        }}>
                             删除项目
                         </Button>
                     </Space>
@@ -271,8 +279,8 @@ export function ProjectDetailPage() {
                                     isAdmin,
                                     projectStatus: data.status,
                                     loading: actionId === assignment.id,
-                                    onClaim: handleClaim,
-                                    onCancel: handleCancelClaim,
+                                    onClaim: (item) => void handleClaim(item),
+                                    onCancel: (item) => void handleCancelClaim(item),
                                     onAssign: setAssignTarget,
                                 })}
                             >
@@ -325,7 +333,9 @@ export function ProjectDetailPage() {
                     <CountedTextArea
                         limit={TEXT_LIMIT.long}
                         value={discussionText}
-                        onChange={(event) => setDiscussionText(event.target.value)}
+                        onChange={(event) => {
+                            setDiscussionText(event.target.value);
+                        }}
                         placeholder="补充说明、注意事项等"
                         autoSize={{minRows: 2, maxRows: 6}}
                         actions={
@@ -366,11 +376,12 @@ export function ProjectDetailPage() {
                                                 key="edit"
                                                 type="link"
                                                 size="small"
-                                                onClick={() =>
+                                                onClick={() => {
                                                     setEditingDiscussion({
                                                         ...discussion,
                                                         content: discussion.content,
-                                                    })
+                                                    });
+                                                }
                                                 }
                                             >
                                                 编辑
@@ -416,7 +427,9 @@ export function ProjectDetailPage() {
 
             <AssignMemberModal
                 assignment={assignTarget}
-                onClose={() => setAssignTarget(null)}
+                onClose={() => {
+                    setAssignTarget(null);
+                }}
                 onSuccess={() => {
                     setAssignTarget(null);
                     project.reload();
@@ -430,14 +443,17 @@ export function ProjectDetailPage() {
                 cancelText="取消"
                 confirmLoading={discussionSubmitting}
                 onOk={handleUpdateDiscussion}
-                onCancel={() => setEditingDiscussion(null)}
+                onCancel={() => {
+                    setEditingDiscussion(null);
+                }}
                 destroyOnHidden
             >
                 <CountedTextArea
                     limit={TEXT_LIMIT.long}
                     value={editingDiscussion?.content ?? ''}
-                    onChange={(event) =>
-                        setEditingDiscussion((prev) => (prev ? {...prev, content: event.target.value} : prev))
+                    onChange={(event) => {
+                        setEditingDiscussion((prev) => (prev ? {...prev, content: event.target.value} : prev));
+                    }
                     }
                     autoSize={{minRows: 3, maxRows: 8}}
                 />
@@ -505,7 +521,9 @@ function renderAssignmentActions(assignment: Assignment, options: AssignmentActi
                 title="确认取消申领？"
                 okText="确认取消"
                 cancelText="再想想"
-                onConfirm={() => onCancel(assignment)}
+                onConfirm={() => {
+                    onCancel(assignment);
+                }}
             >
                 <Button type="link" size="small" danger loading={loading}>
                     取消申领
@@ -530,7 +548,9 @@ function renderAssignmentActions(assignment: Assignment, options: AssignmentActi
         );
     } else {
         actions.push(
-            <Button key="claim" type="link" size="small" loading={loading} onClick={() => onClaim(assignment)}>
+            <Button key="claim" type="link" size="small" loading={loading} onClick={() => {
+                onClaim(assignment);
+            }}>
                 申领
             </Button>,
         );
@@ -543,7 +563,9 @@ function renderAssignmentActions(assignment: Assignment, options: AssignmentActi
                 type="link"
                 size="small"
                 icon={<UserAddOutlined/>}
-                onClick={() => onAssign(assignment)}
+                onClick={() => {
+                    onAssign(assignment);
+                }}
             >
                 指派
             </Button>,

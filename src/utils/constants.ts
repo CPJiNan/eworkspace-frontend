@@ -11,14 +11,24 @@ export const MAX_ASSIGNMENTS = 50;
 
 export const MAX_CAPACITY = 100;
 
+const UNKNOWN_META = {label: '未知', color: 'default'};
+
 export const PROJECT_STATUS_META: Record<ProjectStatus, { label: string; color: string }> = {
     active: {label: '进行中', color: 'processing'},
     finished: {label: '已结束', color: 'default'},
     cancelled: {label: '已取消', color: 'error'},
 };
 
+const PROJECT_STATUS_LOOKUP = new Map<string, { label: string; color: string }>(
+    Object.entries(PROJECT_STATUS_META),
+);
+
+export function projectStatusMeta(status: string): { label: string; color: string } {
+    return PROJECT_STATUS_LOOKUP.get(status) ?? UNKNOWN_META;
+}
+
 export const PROJECT_STATUS_OPTIONS = (Object.keys(PROJECT_STATUS_META) as ProjectStatus[]).map(
-    (value) => ({value, label: PROJECT_STATUS_META[value].label}),
+    (value) => ({value, label: projectStatusMeta(value).label}),
 );
 
 export const ROLE_META: Record<Role, { label: string; color: string }> = {
@@ -27,9 +37,20 @@ export const ROLE_META: Record<Role, { label: string; color: string }> = {
     [Role.User]: {label: '普通用户', color: 'default'},
 };
 
+const ROLE_LOOKUP = new Map<number, { label: string; color: string }>(
+    Object.entries(ROLE_META).map(([key, value]): [number, { label: string; color: string }] => [
+        Number(key),
+        value,
+    ]),
+);
+
+export function roleMeta(role: Role): { label: string; color: string } {
+    return ROLE_LOOKUP.get(role) ?? UNKNOWN_META;
+}
+
 export const ROLE_OPTIONS = [
-    {value: Role.User, label: ROLE_META[Role.User].label},
-    {value: Role.Admin, label: ROLE_META[Role.Admin].label},
+    {value: Role.User, label: roleMeta(Role.User).label},
+    {value: Role.Admin, label: roleMeta(Role.Admin).label},
 ];
 
 export const OPERATION_LABEL: Record<OperationType, string> = {
@@ -56,9 +77,15 @@ export const OPERATION_LABEL: Record<OperationType, string> = {
     clear_operation_log: '清理操作日志',
 };
 
+const OPERATION_LOOKUP = new Map<string, string>(Object.entries(OPERATION_LABEL));
+
+export function operationLabel(type: string): string {
+    return OPERATION_LOOKUP.get(type) ?? type;
+}
+
 export const OPERATION_OPTIONS = (Object.keys(OPERATION_LABEL) as OperationType[]).map((value) => ({
     value,
-    label: OPERATION_LABEL[value],
+    label: operationLabel(value),
 }));
 
 export const TARGET_TYPE_LABEL: Record<TargetType, string> = {
@@ -72,8 +99,13 @@ export const TARGET_TYPE_LABEL: Record<TargetType, string> = {
     operation_log: '操作日志',
 };
 
+const TARGET_TYPE_LOOKUP = new Map<string, string>(Object.entries(TARGET_TYPE_LABEL));
+
+export function targetTypeLabel(type: string): string {
+    return TARGET_TYPE_LOOKUP.get(type) ?? type;
+}
+
 export const TARGET_TYPE_OPTIONS = (Object.keys(TARGET_TYPE_LABEL) as TargetType[]).map((value) => ({
     value,
-    label: TARGET_TYPE_LABEL[value],
+    label: targetTypeLabel(value),
 }));
-

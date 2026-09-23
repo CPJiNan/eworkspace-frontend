@@ -76,7 +76,9 @@ export function PasswordPage() {
                         message={errorMessage}
                         style={{marginTop: 16}}
                         closable
-                        onClose={() => setErrorMessage(null)}
+                        onClose={() => {
+                            setErrorMessage(null);
+                        }}
                     />
                 ) : null}
 
@@ -132,7 +134,9 @@ export function PasswordPage() {
                 </Form>
 
                 {!forced ? (
-                    <Button type="link" block onClick={() => navigate(-1)} style={{padding: 0}}>
+                    <Button type="link" block onClick={() => {
+                        navigate(-1);
+                    }} style={{padding: 0}}>
                         返回上一页
                     </Button>
                 ) : null}
