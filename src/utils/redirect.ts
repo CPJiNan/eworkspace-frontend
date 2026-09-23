@@ -9,7 +9,10 @@ function normalize(path: string): string {
 export function isRedirectablePath(path: string | undefined | null): path is string {
     if (!path) return false;
     if (path.includes('\\') || path.startsWith('//')) return false;
-    if (/[\u0000-\u001f\u007f]/.test(path)) return false;
+    for (const ch of path) {
+        const code = ch.charCodeAt(0);
+        if (code < 0x20 || code === 0x7f) return false;
+    }
     const normalized = normalize(path.split('?')[0]);
     return !NON_REDIRECTABLE.some(
         (prefix) => normalized === prefix || normalized.startsWith(`${prefix}/`),

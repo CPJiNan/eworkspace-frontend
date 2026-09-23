@@ -11,7 +11,7 @@ function readTheme(): ThemeMode {
         if (value === 'dark' || value === 'light') return value;
     } catch {
     }
-    if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         return 'dark';
     }
     return 'light';
