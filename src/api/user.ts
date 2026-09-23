@@ -7,6 +7,7 @@ export interface UpdateProfilePayload {
     wechat?: string;
     qq?: string;
     email?: string;
+    role?: Role;
 }
 
 export interface CreateAccountsPayload {

@@ -1,15 +1,16 @@
 import {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import {ArrowLeftOutlined, KeyOutlined, SaveOutlined, StopOutlined, UndoOutlined} from '@ant-design/icons';
-import {Button, Card, Descriptions, Form, Input, Popconfirm, Result, Space, Tag,} from 'antd';
+import {Button, Card, Descriptions, Form, Input, Popconfirm, Result, Select, Space, Tag,} from 'antd';
 
 import {userApi} from '@/api/user';
 import {ApiError} from '@/api/error';
 import {LoadingBlock} from '@/components/common/StateBlocks';
 import {useAsync} from '@/hooks/useAsync';
 import {useIsMobile} from '@/hooks/useIsMobile';
-import {type User} from '@/types';
-import {ROLE_META, TEXT_LIMIT} from '@/utils/constants';
+import {isSuperAdmin, useAuthStore} from '@/stores/authStore';
+import {Role, type User} from '@/types';
+import {ROLE_META, ROLE_OPTIONS, TEXT_LIMIT} from '@/utils/constants';
 import {getStaticApi} from '@/utils/antdStatic';
 import {formatDateTime} from '@/utils/format';
 
@@ -25,8 +26,11 @@ export function MemberDetailPage() {
     const {studentId} = useParams<{ studentId: string }>();
     const navigate = useNavigate();
     const isMobile = useIsMobile();
+    const currentUser = useAuthStore((state) => state.user);
     const [form] = Form.useForm<MemberForm>();
     const [saving, setSaving] = useState(false);
+    const [roleValue, setRoleValue] = useState<Role>(Role.User);
+    const [savingRole, setSavingRole] = useState(false);
 
     const member = useAsync(() => userApi.getMember(studentId as string), [studentId], {
         enabled: Boolean(studentId),
@@ -42,6 +46,7 @@ export function MemberDetailPage() {
             qq: data.qq ?? '',
             email: data.email ?? '',
         });
+        setRoleValue(data.role);
     }, [member.data, form]);
 
     const handleSave = async (values: MemberForm) => {
@@ -61,6 +66,21 @@ export function MemberDetailPage() {
             getStaticApi()?.message.error(error instanceof ApiError ? error.message : '保存失败');
         } finally {
             setSaving(false);
+        }
+    };
+
+    const handleSaveRole = async () => {
+        if (!studentId) return;
+        setSavingRole(true);
+        try {
+            await userApi.updateMember(studentId, {role: roleValue});
+            getStaticApi()?.message.success('账号角色已更新');
+            member.reload();
+        } catch (error) {
+            getStaticApi()?.message.error(error instanceof ApiError ? error.message : '修改角色失败');
+            member.reload();
+        } finally {
+            setSavingRole(false);
         }
     };
 
@@ -100,6 +120,11 @@ export function MemberDetailPage() {
     if (!data) return null;
 
     const roleMeta = ROLE_META[data.role];
+    const roleEditable =
+        isSuperAdmin(currentUser?.role) &&
+        data.role !== Role.SuperAdmin &&
+        currentUser?.studentId !== data.studentId;
+    const roleChanged = roleEditable && roleValue !== data.role;
 
     return (
         <Space direction="vertical" size={16} style={{width: '100%'}}>
@@ -112,7 +137,29 @@ export function MemberDetailPage() {
                     <Descriptions.Item label="学号">{data.studentId}</Descriptions.Item>
                     <Descriptions.Item label="姓名">{data.name || '未命名用户'}</Descriptions.Item>
                     <Descriptions.Item label="角色">
-                        <Tag color={roleMeta.color}>{roleMeta.label}</Tag>
+                        {roleEditable ? (
+                            <Space wrap>
+                                <Select<Role>
+                                    value={roleValue}
+                                    onChange={setRoleValue}
+                                    options={ROLE_OPTIONS}
+                                    style={{width: 140}}
+                                />
+                                <Popconfirm
+                                    title={`确认改为${ROLE_META[roleValue].label}？`}
+                                    okText="确认修改"
+                                    cancelText="取消"
+                                    disabled={!roleChanged}
+                                    onConfirm={handleSaveRole}
+                                >
+                                    <Button size="small" type="primary" disabled={!roleChanged} loading={savingRole}>
+                                        保存
+                                    </Button>
+                                </Popconfirm>
+                            </Space>
+                        ) : (
+                            <Tag color={roleMeta.color}>{roleMeta.label}</Tag>
+                        )}
                     </Descriptions.Item>
                     <Descriptions.Item label="状态">
                         {data.banned ? <Tag color="red">已封禁</Tag> : <Tag color="green">正常</Tag>}
