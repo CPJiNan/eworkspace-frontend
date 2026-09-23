@@ -330,15 +330,7 @@ export function ProjectFormPage() {
                                                     ]}
                                                     style={{marginBottom: 8}}
                                                 >
-                                                    <Tooltip title="申领该分工后计入的工作量">
-                                                        <InputNumber
-                                                            style={{width: '100%'}}
-                                                            min={1}
-                                                            max={MAX_WORKLOAD}
-                                                            precision={0}
-                                                            placeholder="工作量"
-                                                        />
-                                                    </Tooltip>
+                                                    <WorkloadInput/>
                                                 </Form.Item>
                                             </Col>
                                             <Col xs={12} sm={4}>
@@ -463,6 +455,27 @@ export function ProjectFormPage() {
                 </Card>
             </Form>
         </Space>
+    );
+}
+
+interface WorkloadInputProps {
+    value?: number | null;
+    onChange?: (value: number | null) => void;
+}
+
+function WorkloadInput({value, onChange}: WorkloadInputProps) {
+    return (
+        <Tooltip title="申领该分工后计入的工作量">
+            <InputNumber
+                style={{width: '100%'}}
+                min={1}
+                max={MAX_WORKLOAD}
+                precision={0}
+                value={value ?? undefined}
+                onChange={onChange}
+                placeholder="工作量"
+            />
+        </Tooltip>
     );
 }
 
